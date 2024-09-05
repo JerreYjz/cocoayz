@@ -1,1 +1,10 @@
-These are scripts for training the emulators. Users can modify the model architectures themselves.
+These are scripts for training the emulators.
+
+cmbemutrfhsevangit.py: training python script that the users can modify and use as job scripts.
+
+CMB-emulator-tutorial notebook: This notebook is a short tutorial for training emulators. It contains information about how to modify the architectures
+and how to set up training.
+
+CMB-emulator-TRF-testing-tutorial notebook: This note book is a short tutorial for testing trained Transformer emulators. It contains functions for using the trained
+emulators for prediction, and how to test the model in general. 
+
