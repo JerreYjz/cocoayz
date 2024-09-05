@@ -8,3 +8,5 @@ and how to set up training.
 CMB-emulator-TRF-testing-tutorial notebook: This note book is a short tutorial for testing trained Transformer emulators. It contains functions for using the trained
 emulators for prediction, and how to test the model in general. 
 
+CMB-ResNet-testing-tutorial notebook: This note book is a short tutorial for testing trained ResNet emulators. It contains functions for using the trained
+emulators for prediction, and how to test the model in general. 
