@@ -284,10 +284,10 @@ validloader = DataLoader(validset, batch_size=batch_size, shuffle=True, drop_las
 #training
 batch_size = 512
 n_epoch = 900
-cset = [16,32]#set of channels that we will test on
+cset = [16,32]# set of channels that we will test on
 
-intdim = 4
-int_trf = 5120
+intdim = 4    # internal dimension of the ResMLP blocks
+int_trf = 5120# internal dimension of the Transformer block
 for nc in cset:
     #Set up the model and optimizer
     model = TRF(input_dim=input_size,output_dim=out_size,int_dim=intdim, int_trf=int_trf,N_channels=nc)
@@ -312,7 +312,7 @@ for nc in cset:
     for n in range(n_epoch):
         losses=[]
         for i, data in enumerate(trainloader):
-            model.train()
+            model.train()         # turn on the model to training mode
 
             X = data[0].to(device)# send to device one by one
             
@@ -321,13 +321,13 @@ for nc in cset:
             #scale the output back to C_ell unit
             As = torch.exp(X[:,5]*X_std[0,5]+X_mean[0,5])
             exptau = torch.exp(2*X[:,3]*X_std[0,3]+2*X_mean[0,3])
-            Y_pred =  Y_pred*Y_std+Y_mean
-            Y_pred = Y_pred *As[:,None]/exptau[:,None]
+            Y_pred =  Y_pred*Y_std+Y_mean             # un-normalize to C_ell/A_s*exp(2tau)
+            Y_pred = Y_pred *As[:,None]/exptau[:,None]# put back A_s/exp(2tau)
             diff = Y_pred - Y_batch
 
         
-            loss1 = torch.diag(diff @ covinv @ torch.t(diff))
-            loss1 = torch.sqrt(1+2*loss1)
+            loss1 = torch.diag(diff @ covinv @ torch.t(diff)) # computing chi2
+            loss1 = torch.sqrt(1+2*loss1)                     # computing loss in our definition
             loss=torch.mean(loss1)
             losses.append(loss.cpu().detach().numpy())
             optimizer.zero_grad()
@@ -337,8 +337,9 @@ for nc in cset:
         losses_train.append(np.mean(losses))# We take means since a loss function should return a single real number
         losses_train_med.append(np.median(losses))
 
+        # cross-validation process
         with torch.no_grad():
-            model.eval()
+            model.eval() # turn the model onto evaluating mode, so no training happens
         
             losses = []
             for i, data in enumerate(validloader):
@@ -348,14 +349,12 @@ for nc in cset:
                 Y_v_pred = model(X_v).to(device)
                 As=torch.exp(X_v[:,5]*X_std[0,5]+X_mean[0,5])
                 exptau=torch.exp(2*X_v[:,3]*X_std[0,3]+2*X_mean[0,3])
-                #Y_v_pred = Y_v_pred*Y_std2+Y_mean2
-                #Y_v_pred = torch.matmul(Y_v_pred, transform_matrix)
                 Y_v_pred_back = Y_v_pred*Y_std+Y_mean
                 Y_v_pred_back = Y_v_pred_back*As[:,None]/exptau[:,None]
                 v_diff = (Y_v_batch - Y_v_pred_back)
                 
                 
-                loss1 = torch.diag(v_diff @ covinv @ torch.t(v_diff))# implement with torch.einsum
+                loss1 = torch.diag(v_diff @ covinv @ torch.t(v_diff))
                 loss1 = torch.sqrt(1+2*loss1)
                 loss_vali=torch.mean(loss1)
                 losses.append(loss_vali.cpu().detach().numpy())
@@ -376,13 +375,8 @@ for nc in cset:
                         
                     ))
 
-
+    # saving the models
 
     PATH = "./trainedemu5000hstrf/chiTTAstautrfhshalfmil1trf5120evanc"+str(nc)
     torch.save(model.state_dict(), PATH+'.pt')
-    extrainfo={'X_mean':X_mean,'X_std':X_std,'Y_mean':Y_mean,'Y_std':Y_std,'Y_mean2':Y_mean2,'Y_std2':Y_std2}
-    np.save(PATH+'.npy',extrainfo)
-    np.save(PATH+'losstrain.npy',losses_train)
-    np.save(PATH+'lossvali.npy',losses_vali)
-    np.save(PATH+'losstrainmed.npy',losses_train_med)
-    np.save(PATH+'lossvalimed.npy',losses_vali_med)
+
