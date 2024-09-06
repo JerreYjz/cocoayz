@@ -2,4 +2,5 @@ These are codes for generating data vectors.
 
 CMBunidv.py: The python code for MPI run generation of data vectors from CAMB.
 
-CMBunidv.sh: The sbatch file for MPIrun+OpenMP setting of the python jobs in servers.
+CMBunidv.sh: The sbatch file for MPIrun+OpenMP setting of the python jobs in servers. The example here is written for Seawulf supercomputer
+in Stony Brook University. Users need to modify it to adapt to the servers in their own institutes.
