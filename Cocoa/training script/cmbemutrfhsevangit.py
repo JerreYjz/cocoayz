@@ -236,7 +236,7 @@ class TRF(nn.Module):
         
         return out
 
-#load in data
+#load in data. My parameters are:[Omega_bh^2, Omega_ch^2, H0, tau_re ns, log(As10^10), mnu=0.06, w=-1, wa=0]
 train_samples=np.load('parametersamples/hypersphere/coshs_train.npy',allow_pickle=True)
 
 input_size=len(train_samples[0])
