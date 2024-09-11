@@ -1,9 +1,14 @@
 These are scripts for training the emulators.
 
+emulator.py: code package for ML models and training function.
+
 cmbemutrfhsevangit.py: training python script that the users can modify and use as job scripts.
 
 CMB-emulator-tutorial notebook: This notebook is a short tutorial for training emulators. It contains information about how to modify the architectures
 and how to set up training.
+
+CMB-emulator-tutorial-compressed notebook: This notebook is a short tutorial for training emulators. Compared to the one above, this one is more user-friendly
+and straightforward. This is intended for beginners, and the one above is intended more for developers who want to modify models and scripts as they wish.
 
 CMB-emulator-TRF-testing-tutorial notebook: This note book is a short tutorial for testing trained Transformer emulators. It contains functions for using the trained
 emulators for prediction, and how to test the model in general. 
