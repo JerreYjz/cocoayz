@@ -86,7 +86,7 @@ export MAKE_NUM_THREADS=4
 # ------------------------------------------------------------------------------
 # If not set, pip_core_packages.sh will install several ML packages ------------
 # ------------------------------------------------------------------------------
-export IGNORE_EMULATOR_CPU_PIP_PACKAGES=1
+#export IGNORE_EMULATOR_CPU_PIP_PACKAGES=1
 export IGNORE_EMULATOR_GPU_PIP_PACKAGES=1
 
 # ------------------------------------------------------------------------------
